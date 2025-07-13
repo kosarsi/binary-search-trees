@@ -86,6 +86,46 @@ class Tree {
         }
     }
 
+    deleteItem(value) {
+        this.root = this.#deleteHelper(this.root, value);
+    }
+
+    #deleteHelper(node, value) {
+
+        if (node == null) {
+            return null;
+        }
+
+        if (node.data > value) {
+            node.left = this.#deleteHelper(node.left, value);
+        } else if (node.data < value) {
+            node.right = this.#deleteHelper(node.right, value); 
+        } else {
+
+            if (node.left == null) {
+                return node.right;
+            }
+
+            if (node.right == null) {
+                return node.left; 
+            }
+
+            // Node has both children
+
+            let successor = node.right;
+            while (successor.left != null) {
+                successor = successor.left; 
+            }
+            node.data = successor.data;
+            node.right = this.#deleteHelper(node.right, successor.data);
+
+        }
+
+        return node;
+
+    }
+    
+
 }
 
 const prettyPrint = (node, prefix = '', isLeft = true) => {
@@ -104,7 +144,6 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
 let tree = new Tree();
 let nums = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 tree.buildTree(nums);
-prettyPrint(tree.root);
-tree.deleteItem(4);
-prettyPrint(tree.root);
-console.log(tree.height());
+prettyPrint(tree.root)
+tree.deleteItem(8)
+prettyPrint(tree.root)
