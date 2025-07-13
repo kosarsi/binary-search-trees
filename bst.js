@@ -173,7 +173,26 @@ class Tree {
         }
     }
 
-
+    levelOrderForEach(callback) {
+        if (this.root == null) {
+            return; 
+        }
+        let queue = [];
+        queue.push(this.root);
+        while (queue.length > 0) {
+            let len = queue.length;
+            for (let i = 0; i < len; i++) {
+                let node = queue.shift(); 
+                callback(node);
+                if (node.left != null) {
+                    queue.push(node.left);
+                }
+                if (node.right != null) {
+                    queue.push(node.right); 
+                }
+            }
+        }
+    }
 
 }
 
@@ -193,6 +212,4 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
 let tree = new Tree();
 let nums = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 tree.buildTree(nums);
-prettyPrint(tree.root)
-tree.deleteItem(8)
 prettyPrint(tree.root)
