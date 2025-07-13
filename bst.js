@@ -86,6 +86,34 @@ class Tree {
         }
     }
 
+    preOrderForEach(callback) {
+        this.#preOrderHelper(this.root, callback);
+    }
+
+    #preOrderHelper(node, callback) {
+        callback(node);
+        if (node.left != null) {
+            this.#preOrderHelper(node.left);
+        } 
+        if (node.right != null) {
+            this.#preOrderHelper(node.right); 
+        }
+    }
+
+    postOrderForEach(callback) {
+        this.#postOrderHelper(this.root, callback);
+    }
+
+    #postOrderHelper(node, callback) {
+        if (node.left != null) {
+            this.#postOrderHelper(node.left, callback);
+        }
+        if (node.right != null) {
+            this.#postOrderHelper(node.right, callback);
+        }
+        callback(node); 
+    }
+
     deleteItem(value) {
         this.root = this.#deleteHelper(this.root, value);
     }
@@ -120,11 +148,32 @@ class Tree {
             node.right = this.#deleteHelper(node.right, successor.data);
 
         }
-
         return node;
-
     }
-    
+
+    find(value) {
+        return this.#findHelper(this.root, value)
+    }
+
+    #findHelper(node, value) {
+        if (node.data == value) {
+            return node;
+        }
+        if (node.data > value) {
+            if (node.left == null) {
+                return null;
+            }
+            return this.#findHelper(node.left, value); 
+        }
+        if (node.data < value) {
+            if (node.right == null) {
+                return null;
+            }
+            return this.#findHelper(node.right, value); 
+        }
+    }
+
+
 
 }
 
